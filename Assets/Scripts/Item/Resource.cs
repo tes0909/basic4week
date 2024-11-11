@@ -17,6 +17,7 @@ public class Resource : MonoBehaviour
             if (capacity <= 0) break;
             capacity -= 1;
             Instantiate(Resources.Load<GameObject>("Prefabs/Item_Steak"), hitPoint + Vector3.up, Quaternion.LookRotation(hitNormal, Vector3.up));
+
         }
     }
 }

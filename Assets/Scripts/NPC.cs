@@ -23,7 +23,7 @@ public class NPC : MonoBehaviour
     public float detectDistance;
     private AIState aiState;
 
-    [Header("Wandering")]
+    [Header("Wandering")] // 이동중
     public float minWanderDistance;
     public float maxWanderDistance;
     public float minWanderWaitTime;
@@ -59,7 +59,7 @@ public class NPC : MonoBehaviour
         playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.Player.transform.position);
 
         animator.SetBool("Moving", aiState != AIState.Idle);
-
+        // 플레이어와의 거리를 매 프레임마다 업데이트에서 체크해서 거리가 달라질때마다 NPC 행동이 달라진다.
         switch (aiState)
         {
             case AIState.Idle:
@@ -72,20 +72,24 @@ public class NPC : MonoBehaviour
         }
     }
 
+    // 현재 상태, 행동을 세팅해주는 함수
     public void SetState(AIState state)
     {
         aiState = state;
 
         switch (aiState)
         {
+            // 기본상태
             case AIState.Idle:
                 agent.speed = walkSpeed;
                 agent.isStopped = true;
                 break;
+            // 목표지점을 찾고 이동중인 상태일때
             case AIState.Wandering: 
                 agent.speed = walkSpeed;
                 agent.isStopped = false;
                 break;
+            // 공격중
             case AIState.Attacking:
                 agent.speed = runSpeed;
                 agent.isStopped = false;
@@ -109,6 +113,7 @@ public class NPC : MonoBehaviour
         }
     }
 
+    // 반복해서 다음 목표 지점을 정하는 함수
     void WanderToNewLocation()
     {
         if (aiState != AIState.Idle) return;
